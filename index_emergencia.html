@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso à Prova — EEMTI Dragão do Mar</title>
+
+<style>
+    :root {
+        --bg: #0f172a;
+        --card: #182235;
+        --card-2: #111827;
+        --border: rgba(255,255,255,.10);
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --danger: #ef4444;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+            radial-gradient(circle at top, #1e293b 0%, var(--bg) 55%);
+        padding: 20px;
+    }
+
+    .container {
+        width: min(440px, 100%);
+    }
+
+    .card {
+        background: rgba(24, 34, 53, .94);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 34px;
+        box-shadow: 0 25px 70px rgba(0,0,0,.40);
+        text-align: center;
+    }
+
+    .logo {
+        width: 78px;
+        height: 78px;
+        object-fit: contain;
+        border-radius: 18px;
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: .2px;
+    }
+
+    .subtitulo {
+        margin-top: 7px;
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .linha {
+        height: 1px;
+        background: var(--border);
+        margin: 26px 0;
+    }
+
+    label {
+        display: block;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    input {
+        width: 100%;
+        height: 58px;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        outline: none;
+        background: var(--card-2);
+        color: white;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        transition: .2s;
+    }
+
+    input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+    }
+
+    button {
+        width: 100%;
+        height: 54px;
+        margin-top: 14px;
+        border: none;
+        border-radius: 13px;
+        background: var(--accent);
+        color: white;
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    button:hover {
+        background: var(--accent-hover);
+        transform: translateY(-1px);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    #mensagem {
+        min-height: 20px;
+        margin-top: 14px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .erro {
+        color: #f87171;
+    }
+
+    .ajuda {
+        margin-top: 25px;
+        padding-top: 18px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.7;
+    }
+
+    .codigo {
+        display: inline-block;
+        margin: 2px;
+        padding: 3px 7px;
+        border-radius: 5px;
+        background: rgba(255,255,255,.06);
+        color: #cbd5e1;
+        font-family: monospace;
+    }
+
+    .rodape {
+        text-align: center;
+        margin-top: 16px;
+        color: #64748b;
+        font-size: 10px;
+    }
+
+    /* Tela da prova */
+    #telaProva {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        display: none;
+        z-index: 1000;
+    }
+
+    #frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .barra-prova {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1100;
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-sair {
+        width: auto;
+        height: auto;
+        margin: 0;
+        padding: 9px 13px;
+        border-radius: 9px;
+        background: rgba(15,23,42,.90);
+        border: 1px solid rgba(255,255,255,.15);
+        font-size: 11px;
+    }
+
+    .btn-sair:hover {
+        background: rgba(30,41,59,.98);
+    }
+
+    @media (max-width: 500px) {
+        .card {
+            padding: 28px 22px;
+        }
+
+        h1 {
+            font-size: 20px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container" id="inicio">
+
+    <div class="card">
+
+        <img src="imagem1.png"
+             class="logo"
+             alt="EEMTI Dragão do Mar"
+             onerror="this.style.display='none'">
+
+        <h1>EEMTI DRAGÃO DO MAR</h1>
+        <div class="subtitulo">Acesso direto à avaliação</div>
+
+        <div class="linha"></div>
+
+        <label for="codigo">Código da prova</label>
+
+        <input
+            id="codigo"
+            type="text"
+            maxlength="8"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            placeholder="EX.: MAT1"
+            oninput="this.value = this.value.toUpperCase()"
+            onkeydown="if(event.key === 'Enter') abrirProva()"
+        >
+
+        <button onclick="abrirProva()">
+            ABRIR PROVA
+        </button>
+
+        <div id="mensagem"></div>
+
+    </div>
+
+    <div class="rodape">
+        EEMTI DRAGÃO DO MAR · By D.S.Montenegro
+    </div>
+
+</div>
+
+
+<div id="telaProva">
+
+    <div class="barra-prova">
+        <button class="btn-sair" onclick="voltar()">
+            ← VOLTAR
+        </button>
+    </div>
+
+    <iframe id="frame"></iframe>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   PROVAS
+   Edite SOMENTE os links abaixo quando necessário.
+   ===================================================== */
+
+const provas = {
+
+    // 1º ANO — INTEGRAL
+    MAT1: "https://docs.google.com/forms/d/e/1FAIpQLSfODOWlKQoW-FFkJpDrFJrFM6k_1BrziVXNz054YJykRNYHBQ/viewform?embedded=true",
+    NAT1: "",
+    HUM1: "https://docs.google.com/forms/d/e/1FAIpQLSfngsSALtxLwZGSMX6LoKb7miv_bXJC4Kbuh3Am0rAuvlneSQ/viewform?embedded=true",
+    LIN1: "https://docs.google.com/forms/d/e/1FAIpQLSdW-1Ovew57ft-ZyANhOY9rCW_33RcefgmBhBKKf8Cbqq1SGw/viewform?embedded=true",
+
+    // 1º ANO — NOITE
+    MAT1N: "https://docs.google.com/forms/d/e/1FAIpQLSe0Wd1hIeHvy3Bhvi0BOQEoNUfeyNEyMlmZRFB-6Jbs_7VpvA/viewform?embedded=true",
+    NAT1N: "",
+    HUM1N: "https://docs.google.com/forms/d/e/1FAIpQLSfkJH8g5y09tk7RcYFVaHSL83XlPGWliK3a-zVmUe_4tvKeZg/viewform?embedded=true",
+    LIN1N: "https://docs.google.com/forms/d/e/1FAIpQLScWkeeT8z2vVwj5jNsgc7GJ9h12brNRbY7LbIoD7NqzHo0mSw/viewform?embedded=true",
+
+    // 2º ANO — INTEGRAL
+    MAT2: "https://docs.google.com/forms/d/e/1FAIpQLSf1QFGzKR9LwTZ9ich1Vu5qHVW5bpCgsDluggkskm4JDIAOdQ/viewform?embedded=true",
+    NAT2: "",
+    HUM2: "https://docs.google.com/forms/d/e/1FAIpQLSdruXU6mBlkZf2G-Vw6mL4jN4Lb1q4wSQSuQSIY0Sn_jO11ag/viewform?embedded=true",
+    LIN2: "https://docs.google.com/forms/d/e/1FAIpQLScWB4GIyXL2gImCdlWnJDuu02Cpuz3bseQAMxsaGD4EUVb9zg/viewform?embedded=true",
+
+    // 2º ANO — NOITE
+    MAT2N: "https://docs.google.com/forms/d/e/1FAIpQLSeLsq_V3AUL5SAPmM0gj_YLwI_cO8CB5l7C4-CuYeZylkXogA/viewform?embedded=true",
+    NAT2N: "",
+    HUM2N: "https://docs.google.com/forms/d/e/1FAIpQLSffK_eykiTnYwIyJiG_6qjFfu40kdhrwG2HHR3sKXaB89fX_Q/viewform?embedded=true",
+    LIN2N: "https://docs.google.com/forms/d/e/1FAIpQLSfAmuG7s9J0s0p6HnfYj4DdPDfS2l2W7U8PKwIpB2aJg8knTA/viewform?embedded=true"
+};
+
+
+/* =====================================================
+   NOMES DAS PROVAS
+   ===================================================== */
+
+const nomes = {
+    MAT1: "Matemática — 1º Ano Integral",
+    MAT1N: "Matemática — 1º Ano Noite",
+    NAT1: "Natureza — 1º Ano Integral",
+    NAT1N: "Natureza — 1º Ano Noite",
+    HUM1: "Humanas — 1º Ano Integral",
+    HUM1N: "Humanas — 1º Ano Noite",
+    LIN1: "Linguagens — 1º Ano Integral",
+    LIN1N: "Linguagens — 1º Ano Noite",
+
+    MAT2: "Matemática — 2º Ano Integral",
+    MAT2N: "Matemática — 2º Ano Noite",
+    NAT2: "Natureza — 2º Ano Integral",
+    NAT2N: "Natureza — 2º Ano Noite",
+    HUM2: "Humanas — 2º Ano Integral",
+    HUM2N: "Humanas — 2º Ano Noite",
+    LIN2: "Linguagens — 2º Ano Integral",
+    LIN2N: "Linguagens — 2º Ano Noite"
+};
+
+
+/* =====================================================
+   ABRIR PROVA
+   ===================================================== */
+
+function abrirProva() {
+
+    const campo = document.getElementById("codigo");
+    const mensagem = document.getElementById("mensagem");
+
+    const codigo = campo.value.trim().toUpperCase();
+
+    mensagem.textContent = "";
+    mensagem.className = "";
+
+    if (!codigo) {
+        mensagem.textContent = "Digite o código da prova.";
+        mensagem.className = "erro";
+        campo.focus();
+        return;
+    }
+
+    const link = provas[codigo];
+
+    if (!link) {
+        mensagem.textContent = "Código inválido ou prova não cadastrada.";
+        mensagem.className = "erro";
+        campo.select();
+        return;
+    }
+
+    document.title = nomes[codigo] || "Avaliação";
+
+    document.getElementById("frame").src = link;
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("telaProva").style.display = "block";
+
+    entrarFullscreen();
+}
+
+
+/* =====================================================
+   VOLTAR
+   ===================================================== */
+
+function voltar() {
+
+    if (!confirm("Deseja sair da prova e voltar para o campo de código?")) {
+        return;
+    }
+
+    document.getElementById("frame").src = "";
+    document.getElementById("telaProva").style.display = "none";
+    document.getElementById("inicio").style.display = "block";
+
+    document.getElementById("codigo").value = "";
+    document.getElementById("codigo").focus();
+
+    document.title = "Acesso à Prova — EEMTI Dragão do Mar";
+}
+
+
+/* =====================================================
+   TELA CHEIA
+   ===================================================== */
+
+function entrarFullscreen() {
+
+    const elemento = document.documentElement;
+
+    if (elemento.requestFullscreen) {
+        elemento.requestFullscreen().catch(() => {});
+    }
+}
+
+
+/* =====================================================
+   ESCAPE / TELA CHEIA
+   ===================================================== */
+
+document.addEventListener("fullscreenchange", () => {
+
+    // Não força novamente.
+    // O botão VOLTAR continua disponível caso necessário.
+
+});
+
+
+/* =====================================================
+   INÍCIO
+   ===================================================== */
+
+window.addEventListener("load", () => {
+    document.getElementById("codigo").focus();
+});
+
+</script>
+
+</body>
+</html>
